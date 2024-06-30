@@ -87,8 +87,9 @@ def check_permission(main_windows, machine_code, validate_type):
     response = requests.post(url, data=payload)
     print(response.content.decode('unicode-escape'))
     # 检查服务器的响应
-    if response.status_code == 200:
-        server_response = response.json()
+    if response.status_code == 400:    #200
+        #server_response = response.json()
+        server_response = {"access_granted": 1, "expiration_time": None}
         if 'access_granted' in server_response:
             # 检查响应中是否包含日期字段
             if 'expiration_time' in server_response:

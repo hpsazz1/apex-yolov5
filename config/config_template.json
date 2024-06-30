@@ -100,7 +100,7 @@
             "data": "./apex_model/data2.yaml"
         },
         "apex区分敌我": {
-            "weights": "./apex_model/best.engine",
+            "weights": "./apex_model/x2w.pt",
             "data": "./apex_model/data.yaml"
         },
         "锁靶": {
@@ -114,7 +114,7 @@
     "aim_move_path_ny": 1.1,
     "mouse_move_frequency": 0.001,
     "mouse_move_frequency_switch": false,
-    "mouse_model": "fei_yi_lai_single",
+    "mouse_model": "km_box_net",
     "mouse_smoothing_switch": true,
     "ai_middle_toggle": true,
     "ai_toggle": true,
@@ -187,8 +187,8 @@
         },
         "km_box_net": {
             "ip": "192.168.2.188",
-            "port": "35368",
-            "uuid": "8A6E5C53"
+            "port": "13384",
+            "uuid": "7679E04E"
         },
         "fei_yi_lai": {
             "VID/PID": "C2160102"

@@ -3,8 +3,8 @@
     320,
     320
   ],
-  "weights": ".\\apex_model\\best3.pt",
-  "data": ".\\apex_model\\best3.yaml",
+  "weights": ".\\apex_model\\s640d.pt",
+  "data": ".\\apex_model\\data.yaml",
   "half": true,
   "device": 0,
   "include": ["engine"],

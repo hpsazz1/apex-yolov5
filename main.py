@@ -1,6 +1,5 @@
 import sys
 import threading
-
 import pynput
 from PyQt5.QtWidgets import QApplication
 

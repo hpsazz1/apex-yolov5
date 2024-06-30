@@ -167,8 +167,8 @@ class Config:
             },
             "km_box_net": {
                 "ip": "192.168.2.188",
-                "port": "35368",
-                "uuid": "8A6E5C53"
+                "port": "13384",
+                "uuid": "7679E04E"
             },
             "fei_yi_lai": {
                 "VID/PID": "C2160102"
