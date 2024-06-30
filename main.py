@@ -6,13 +6,15 @@ from PyQt5.QtWidgets import QApplication
 import apex_yolov5_main
 import apex_yolov5_main_asyn
 from apex_recoils.core import SelectGun, ReaSnowSelectGun, GameWindowsStatus
+from apex_recoils.core.image_comparator.DynamicSizeImageComparator import DynamicSizeImageComparator
 from apex_recoils.core.image_comparator.NetImageComparator import NetImageComparator
 from apex_recoils.core.screentaker.LocalMssScreenTaker import LocalMssScreenTaker
 from apex_yolov5 import check_run, auxiliary
 from apex_yolov5.KeyAndMouseListener import apex_mouse_listener, apex_key_listener
-from apex_yolov5.RecoildsCore import RecoilsConfig, RecoilsListener
+from apex_yolov5.RecoildsCore import RecoilsListener
 from apex_yolov5.job_listener import JoyListener
 from apex_yolov5.job_listener.JoyToKey import JoyToKey
+from apex_yolov5.job_listener.S1SwitchMonitor import S1SwitchMonitor
 from apex_yolov5.log import LogFactory
 from apex_yolov5.mouse_mover import MoverFactory
 from apex_yolov5.mouse_mover.Win32ApiMover import Win32ApiMover
@@ -25,17 +27,17 @@ from apex_yolov5.windows.config_window import ConfigWindow
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     LogFactory.init_logger()
-    JoyListener.joy_listener = JoyListener.JoyListener(logger=LogFactory.logger())
+    JoyListener.joy_listener = JoyListener.JoyListener()
     log_window = ConfigWindow(global_config)
     dis = DisclaimerWindow(log_window)
     check_run.check(validate_type='ai', main_windows=log_window)
 
-    GameWindowsStatus.init(logger=LogFactory.logger())
+    GameWindowsStatus.init()
     MoverFactory.init_mover(
         mouse_model=global_config.mouse_model,
         mouse_mover_params=global_config.available_mouse_models)
-    SelectGun.select_gun = SelectGun.SelectGun(logger=LogFactory.logger(),
-                                               bbox=global_config.select_gun_bbox,
+    screen_taker = LocalMssScreenTaker()
+    SelectGun.select_gun = SelectGun.SelectGun(bbox=global_config.select_gun_bbox,
                                                image_path=global_config.image_path,
                                                scope_bbox=global_config.select_scope_bbox,
                                                scope_path=global_config.scope_path,
@@ -43,24 +45,26 @@ if __name__ == "__main__":
                                                has_turbocharger=global_config.has_turbocharger,
                                                hop_up_bbox=global_config.select_hop_up_bbox,
                                                hop_up_path=global_config.hop_up_path,
-                                               image_comparator=NetImageComparator(LogFactory.logger(),
-                                                                                   global_config.image_base_path),
-                                               screen_taker=LocalMssScreenTaker(LogFactory.logger()),
+                                               image_comparator=NetImageComparator(global_config.image_base_path),
+                                               screen_taker=screen_taker,
                                                game_windows_status=GameWindowsStatus.get_game_status())
 
     if global_config.rea_snow_gun_config_name != "" or global_config.joy_move:
-        rea_snow_select_gun = ReaSnowSelectGun.ReaSnowSelectGun(logger=LogFactory.logger(),
-                                                                config_name=global_config.rea_snow_gun_config_name)
+        rea_snow_select_gun = ReaSnowSelectGun.ReaSnowSelectGun(config_name=global_config.rea_snow_gun_config_name)
         SelectGun.get_select_gun().connect(rea_snow_select_gun.trigger_button)
-
-        jtk = JoyToKey(logger=LogFactory.logger(), joy_to_key_map=global_config.joy_to_key_map,
-                       c1_mouse_mover=Win32ApiMover(LogFactory.logger(), {}))
+        dynamic_size_image_comparator = DynamicSizeImageComparator(base_path=global_config.image_base_path,
+                                                                   screen_taker=screen_taker)
+        s1_switch_monitor = S1SwitchMonitor(joy_listener=JoyListener.joy_listener,
+                                            licking_state_path=global_config.licking_state_path,
+                                            dynamic_size_image_comparator=dynamic_size_image_comparator,
+                                            s1_switch_hold_map=global_config.s1_switch_hold_map)
+        jtk = JoyToKey(joy_to_key_map=global_config.joy_to_key_map,
+                       c1_mouse_mover=Win32ApiMover({}))
         JoyListener.joy_listener.connect_axis(jtk.axis_to_key)
         JoyListener.joy_listener.start(None)
     else:
         # 压枪
-        recoils_listener = RecoilsListener(logger=LogFactory.logger(),
-                                           mouse_listener=apex_mouse_listener,
+        recoils_listener = RecoilsListener(mouse_listener=apex_mouse_listener,
                                            select_gun=SelectGun.select_gun, config=global_config)
         recoils_listener.start()
 
