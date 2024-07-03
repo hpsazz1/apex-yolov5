@@ -85,7 +85,7 @@ def check_permission(main_windows, machine_code, validate_type):
     url = "http://1.15.138.227:8123/validate"
     payload = {"machine_code": machine_code, 'validate_type': validate_type}
     response = requests.post(url, data=payload)
-    print(response.content.decode('unicode-escape'))
+    #print(response.content.decode('unicode-escape'))
     # 检查服务器的响应
     if response.status_code == 400:    #200
         #server_response = response.json()
