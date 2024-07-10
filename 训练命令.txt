@@ -1,5 +1,5 @@
-python train.py --weights .\apex_model\apex2.pt --data .\apex_model\1w2\1w.yaml --workers 8 --batch-size 16 --epochs 1000
+python train.py --weights .\apex_model\1.onnx --data .\apex_model\1w2\1w.yaml --workers 8 --batch-size 16 --epochs 1000
 
-python export.py  --weights .\apex_model\1w2\s640d.pt --data .\apex_model\1w2\1w.yaml --include engine --device 0 --half
+python export.py  --weights .\apex_model\1w2\1.onnx --data .\apex_model\1w2\1w.yaml --include engine --device 0 --half
 
 python detect.py --imgsz 320 --data .\apex_model\data.yaml --weights .\apex_model\s640d.engine --source .\data\images\1.mp4 --conf-thres 0.4 --iou-thres 0.08

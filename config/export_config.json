@@ -3,9 +3,9 @@
     320,
     320
   ],
-  "weights": ".\\apex_model\\s640d.pt",
+  "weights": ".\\apex_model\\1.onnx",
   "data": ".\\apex_model\\data.yaml",
-  "weights": ".\\apex_model\\5w.pt",
+  "weights": ".\\apex_model\\1.onnx",
   "data": ".\\apex_model\\APEX\\all_one\\data.yaml",
   "half": true,
   "device": 0,
