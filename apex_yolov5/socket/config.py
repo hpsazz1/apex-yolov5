@@ -8,7 +8,7 @@ import pynput
 
 from apex_yolov5.Counter import sure_no_aim, reset_counter
 from apex_yolov5.Tools import Tools
-from apex_yolov5.check_run import open_check
+from apex_yolov5.check_run import check
 
 screenshot_resolution = {
     (1920, 1080): (1542, 959, 1695, 996),
@@ -122,7 +122,7 @@ class Config:
         配置类
     """
 
-    @open_check(val_type="ai")
+
     def __init__(self):
         self.config_data = read_config()
         self.init()

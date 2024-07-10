@@ -61,15 +61,17 @@ class ConfigWindow(QMainWindow):
             self.initUI()
             self.setWindowFlags(Qt.WindowStaysOnTopHint)
             self.init_sign = True
+            expiration_time = None
             if title is None:
                 self.setWindowTitle("Apex Gun " + self.config.version)
             else:
                 self.setWindowTitle(title)
-            if check_run.expiration_time is None:
+
+            if expiration_time is None:
                 self.setWindowTitle(self.windowTitle() + " 永久授权")
             else:
                 self.setWindowTitle(
-                    self.windowTitle() + " 授权过期时间：" + check_run.expiration_time)
+                    self.windowTitle() + " 授权过期时间：" + expiration_time)
 
     def create_menus(self):
         config_action = QAction("实时锁定人物展示", self)

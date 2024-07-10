@@ -113,7 +113,7 @@ def check_permission(main_windows, machine_code, validate_type):
     return None
 
 
-def check(validate_type, main_windows=None):
+def check(val_type, main_windows=None):
     main_board_info = get_mainboard_info()
     disk_info = get_disk_info()
 
@@ -124,7 +124,7 @@ def check(validate_type, main_windows=None):
     disk_info_hash = hashlib.sha256(disk_info_str.encode()).hexdigest()
     machine_code = hashlib.sha256((main_board_info_hash + "_" + disk_info_hash).encode()).hexdigest()
     print("machine_code:" + machine_code)
-    if not check_permission(main_windows, machine_code, validate_type):
+    if not check_permission(main_windows, machine_code, val_type):
         print("没有运行权限")
         QMessageBox.warning(main_windows, "错误", "没有运行权限")
         os._exit(0)
